@@ -128,6 +128,7 @@
                     <field name="x_planned_amount" widget="integer" string="20 - 21 Budget (E)" sum="Total"/>
                     <field name="planned_amount_revised_neg" widget="integer" string="20 - 21 Budget [REVISED] (F)" sum="Total"/>
                     <field name="last_year_variance_amount" string="Variance (E - C)" widget="integer" sum="Total"/>
+                    <field name="account_type" optional="hide"/>
 
                 </tree>
             </field>
