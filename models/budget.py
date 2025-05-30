@@ -141,11 +141,13 @@ class Budget(models.Model):
     last_2_year_practical_amount_neg = fields.Float(
         compute="_compute_negative", string="Last 2 Year Practical Amount", digits=0, track_visibility="onchange")
 
+    last_year_planned_amount_100_neg = fields.Float(
+        compute="_compute_negative", string="Last Year Planned Amount (Negative)", digits=0, track_visibility="onchange")
     last_2_year_planned_amount_100 = fields.Float(compute="_compute_last2year_planned_amount",
                                                   string="Last 2 Year Planned Amount", digits=0, track_visibility="onchange")
 
     last_2_year_planned_amount_100_neg = fields.Float(
-        compute="_compute_negative", string="Last 2 Year Practical Amount (Negative)", digits=0, track_visibility="onchange")
+        compute="_compute_negative", string="Last 2 Year Planned Amount (Negative)", digits=0, track_visibility="onchange")
 
     budget_template = fields.Boolean(
         string="Budget Template", store=True, copy=False, default=False)
@@ -188,14 +190,16 @@ class Budget(models.Model):
     @api.onchange('planned_amount_revised')
     def _compute_negative(self):
         for budget in self:
-            if budget.account_id.account_type == 'Expenses':
+            if budget.account_id.account_type.lower() == 'expense':
                 budget.planned_amount_revised_neg = budget.planned_amount_revised * -1
                 budget.planned_amount_100_neg = budget.planned_amount_100 * -1
                 budget.last_2_year_planned_amount_100_neg = budget.last_2_year_planned_amount_100 * -1
+                budget.last_year_planned_amount_100_neg = budget.last_year_planned_amount_100 * -1
             else:
                 budget.planned_amount_revised_neg = budget.planned_amount_revised
                 budget.planned_amount_100_neg = budget.planned_amount_100
                 budget.last_2_year_planned_amount_100_neg = budget.last_2_year_planned_amount_100
+                budget.last_year_planned_amount_100_neg = budget.last_year_planned_amount_100
 
             budget.last_year_practical_amount_neg = budget.last_year_practical_amount * -1
             budget.last_2_year_practical_amount_neg = budget.last_2_year_practical_amount * -1
