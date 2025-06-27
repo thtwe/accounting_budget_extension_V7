@@ -169,9 +169,11 @@ class Budget(models.Model):
                 total_last_practical = 0.0
                 total_last_2_practical = 0.0
                 total_last_2_planned_100 = 0.0
+                total_last_planned_100 = 0.0
                 total_planned_100 = 0.0
                 total_planned_amount_revised = 0.0
                 total_variance = 0.0
+                total_practical_amount = 0.0
                 for record in lines:
                     total_last_practical += record.last_year_practical_amount_neg
                     total_planned_100 += record.planned_amount_100_neg
@@ -179,12 +181,16 @@ class Budget(models.Model):
                     total_last_2_planned_100 += record.last_2_year_planned_amount_100_neg
                     total_planned_amount_revised += record.planned_amount_revised_neg
                     total_variance += record.last_year_variance_amount
+                    total_last_planned_100 += record.last_year_planned_amount_100_neg
+                    total_practical_amount += record.practical_amount
                 line['last_year_practical_amount_neg'] = total_last_practical
                 line['planned_amount_100_neg'] = total_planned_100
                 line['last_2_year_practical_amount_neg'] = total_last_2_practical
                 line['last_2_year_planned_amount_100_neg'] = total_last_2_planned_100
                 line['planned_amount_revised_neg'] = total_planned_amount_revised
                 line['last_year_variance_amount'] = total_variance
+                line['last_year_planned_amount_100_neg'] = total_last_planned_100
+                line['practical_amount'] = total_practical_amount
         return res
 
     @api.onchange('planned_amount_revised')
